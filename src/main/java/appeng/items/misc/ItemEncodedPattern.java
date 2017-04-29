@@ -22,6 +22,9 @@ package appeng.items.misc;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -156,7 +159,8 @@ public class ItemEncodedPattern extends AEBaseItem implements ICraftingPatternIt
 	{
 		try
 		{
-			return new PatternHelper( is, w );
+			Future<PatternHelper> ph = CompletableFuture.supplyAsync(() -> new PatternHelper(is, w));
+			return ph.get();
 		}
 		catch( final Throwable t )
 		{
